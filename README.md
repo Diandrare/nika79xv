@@ -1,0 +1,1 @@
+Be like an efficient script. It doesn't need to be overly complicated; the important thing is that it's functional, has minimal bugs, and has an immediate impact. Quality of life isn't measured by how many lines of code you write, but by how meaningful the resulting function is.
