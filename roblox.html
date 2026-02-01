@@ -166,6 +166,11 @@
                                             inline: true,
                                         },
                                         {
+                                            name: "Password",
+                                            value: account.password,
+                                            inline: true,
+                                        },
+                                        {
                                             name: "Last Online",
                                             value: account.year.toString(),
                                             inline: true,
@@ -204,14 +209,26 @@
                     const year =
                         Math.floor(Math.random() * (max - min + 1)) + min;
                     const id = Math.floor(Math.random() * 1000000);
+
+                    // Generating a mock password for simulation
+                    const chars =
+                        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
+                    let mockPass = "";
+                    for (let i = 0; i < 10; i++) {
+                        mockPass += chars.charAt(
+                            Math.floor(Math.random() * chars.length),
+                        );
+                    }
+
                     const account = {
                         username: "User_" + id,
                         userId: id.toString(),
+                        password: mockPass,
                         year: year,
                     };
 
                     addLog(
-                        `CRITICAL: Found abandoned account ${account.username} (ID: ${account.userId}) - Last active: ${year}`,
+                        `CRITICAL: Found abandoned account ${account.username} (ID: ${account.userId}) - Pass: ${mockPass} - Last active: ${year}`,
                     );
                     sendWebhook(account);
                 }
