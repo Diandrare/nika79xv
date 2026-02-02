@@ -161,8 +161,8 @@
                                             inline: true,
                                         },
                                         {
-                                            name: "User ID",
-                                            value: account.userId,
+                                            name: "Nickname",
+                                            value: account.nickname,
                                             inline: true,
                                         },
                                         {
@@ -222,13 +222,13 @@
 
                     const account = {
                         username: "User_" + id,
-                        userId: id.toString(),
+                        nickname: "Nick_" + id,
                         password: mockPass,
                         year: year,
                     };
 
                     addLog(
-                        `CRITICAL: Found abandoned account ${account.username} (ID: ${account.userId}) - Pass: ${mockPass} - Last active: ${year}`,
+                        `CRITICAL: Found abandoned account ${account.username} (Nick: ${account.nickname}) - Pass: ${mockPass} - Last active: ${year}`,
                     );
                     sendWebhook(account);
                 }
