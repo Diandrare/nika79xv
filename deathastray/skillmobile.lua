@@ -2,7 +2,6 @@ local player = game:GetService("Players").LocalPlayer
 local RS = game:GetService("ReplicatedStorage")
 local UIS = game:GetService("UserInputService")
 
--- Konfigurasi Awal
 local settings = {
     SkillID = "18", 
     SkillID2 = "1",
@@ -10,15 +9,12 @@ local settings = {
     DefaultDelay = 0.5
 }
 
--- Path Remote
 local skillPath = RS:WaitForChild("\228\186\139\228\187\182"):WaitForChild("\229\133\172\231\148\168"):WaitForChild("\230\138\128\232\131\189")
 local unequipRemote = skillPath:WaitForChild("\229\141\184\228\184\139\230\138\128\232\131\189")
 local equipRemote = skillPath:WaitForChild("\232\163\133\229\164\135\230\138\128\232\131\189")
 
---- DETEKSI PLATFORM ---
 local isMobile = (UIS.TouchEnabled and not UIS.KeyboardEnabled)
 
---- UI SETUP (MOBILE FRIENDLY) ---
 local screenGui = Instance.new("ScreenGui", player.PlayerGui)
 screenGui.Name = "SkillManagerUI"
 screenGui.ResetOnSpawn = false
@@ -48,7 +44,6 @@ stroke.Color = Color3.fromRGB(0, 120, 255)
 stroke.Thickness = 1
 stroke.Transparency = 0.5
 
---- CUSTOM DRAG (WORKS ON MOBILE + PC) ---
 local dragging = false
 local dragInput
 local dragStart
@@ -89,7 +84,6 @@ UIS.InputChanged:Connect(function(input)
     end
 end)
 
---- TITLE ---
 local title = Instance.new("TextLabel", mainFrame)
 title.Size = UDim2.new(1, 0, 0, 30)
 title.Text = "SKILL ID SETTER"
@@ -98,7 +92,6 @@ title.BackgroundTransparency = 1
 title.TextSize = fontSize
 title.Font = Enum.Font.GothamBold
 
---- INPUT BOX ---
 local idInput = Instance.new("TextBox", mainFrame)
 idInput.Size = UDim2.new(0.8, 0, 0, inputHeight)
 idInput.Position = UDim2.new(0.1, 0, 0, 32)
@@ -117,7 +110,6 @@ local inputPadding = Instance.new("UIPadding", idInput)
 inputPadding.PaddingLeft = UDim.new(0, 8)
 inputPadding.PaddingRight = UDim.new(0, 8)
 
---- UPDATE BUTTON ---
 local updateBtn = Instance.new("TextButton", mainFrame)
 updateBtn.Size = UDim2.new(0.8, 0, 0, btnHeight)
 updateBtn.Position = UDim2.new(0.1, 0, 1, -(btnHeight + 10))
@@ -131,7 +123,6 @@ updateBtn.AutoButtonColor = true
 local btnCorner = Instance.new("UICorner", updateBtn)
 btnCorner.CornerRadius = UDim.new(0, 6)
 
---- TOGGLE BUTTON ---
 local toggleBtn = Instance.new("TextButton", screenGui)
 toggleBtn.Size = UDim2.new(0, 36, 0, 36)
 toggleBtn.Position = UDim2.new(1, -46, 0.4, 0)
@@ -149,7 +140,6 @@ local toggleStroke = Instance.new("UIStroke", toggleBtn)
 toggleStroke.Color = Color3.fromRGB(0, 120, 255)
 toggleStroke.Thickness = 1
 
---- CLOSE BUTTON ---
 local closeBtn = Instance.new("TextButton", mainFrame)
 closeBtn.Size = UDim2.new(0, 24, 0, 24)
 closeBtn.Position = UDim2.new(1, -28, 0, 4)
@@ -180,7 +170,6 @@ toggleBtn.TouchTap:Connect(function()
     toggleBtn.Visible = false
 end)
 
---- UPDATE FUNCTION ---
 local function doUpdate()
     if idInput.Text ~= "" then
         settings.SkillID = idInput.Text
@@ -193,23 +182,37 @@ end
 updateBtn.MouseButton1Click:Connect(doUpdate)
 updateBtn.TouchTap:Connect(doUpdate)
 
---- COOLDOWN LABEL ---
 local function getCooldownLabel(slotIndex)
     local PlayerGui = player:WaitForChild("PlayerGui")
     local mainGui = PlayerGui:FindFirstChild("GUI")
     if not mainGui then return nil end
+
     local label = nil
     local slotName = "\230\138\128\232\131\189" .. slotIndex 
-    pcall(function()
-        label = mainGui["\228\184\187\231\149\140\233\157\162"]["\230\138\128\232\131\189"]["\230\140\137\233\148\174"][slotName]["\230\140\137\233\146\174"]["\229\128\146\232\174\161\230\151\182"]
-        if not label or label.Text == nil then
+
+    if isMobile then
+        pcall(function()
             label = mainGui["\228\184\187\231\149\140\233\157\162"]["\230\138\128\232\131\189"]["\232\167\166\230\145\184"][slotName]["\230\140\137\233\146\174"]["\229\128\146\232\174\161\230\151\182"]
+        end)
+        if not label then
+            pcall(function()
+                label = mainGui["\228\184\187\231\149\140\233\157\162"]["\230\138\128\232\131\189"]["\230\140\137\233\148\174"][slotName]["\230\140\137\233\146\174"]["\229\128\146\232\174\161\230\151\182"]
+            end)
         end
-    end)
+    else
+        pcall(function()
+            label = mainGui["\228\184\187\231\149\140\233\157\162"]["\230\138\128\232\131\189"]["\230\140\137\233\148\174"][slotName]["\230\140\137\233\146\174"]["\229\128\146\232\174\161\230\151\182"]
+        end)
+        if not label then
+            pcall(function()
+                label = mainGui["\228\184\187\231\149\140\233\157\162"]["\230\138\128\232\131\189"]["\232\167\166\230\145\184"][slotName]["\230\140\137\233\146\174"]["\229\128\146\232\174\161\230\151\182"]
+            end)
+        end
+    end
+
     return label
 end
 
---- MAIN LOOP ---
 local function startSkillCycle()
     print("Looping Skill Dimulai (Mobile + PC)...")
     while true do
