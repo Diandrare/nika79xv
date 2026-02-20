@@ -11,13 +11,17 @@ local settings = {
 }
 
 -- Path Remote
-local skillPath = RS:WaitForChild("äº‹ä»¶"):WaitForChild("å…¬ç”¨"):WaitForChild("æŠ€èƒ½")
+local skillPath = RS:WaitForChild("事件"):WaitForChild("公用"):WaitForChild("技能")
 local unequipRemote = skillPath:WaitForChild("\229\141\184\228\184\139\230\138\128\232\131\189")
 local equipRemote = skillPath:WaitForChild("\232\163\133\229\164\135\230\138\128\232\131\189")
 
 --- UI SETUP SIMPLE ---
-local screenGui = Instance.new("ScreenGui", player.PlayerGui)
+-- Menggunakan ResetOnSpawn = false agar UI tidak hilang saat mati
+local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "SkillManagerUI"
+screenGui.ResetOnSpawn = false 
+screenGui.IgnoreGuiInset = true
+screenGui.Parent = player:WaitForChild("PlayerGui")
 
 local mainFrame = Instance.new("Frame", screenGui)
 mainFrame.Size = UDim2.new(0, 150, 0, 100)
@@ -25,7 +29,7 @@ mainFrame.Position = UDim2.new(0.1, 0, 0.4, 0)
 mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 mainFrame.BorderSizePixel = 0
 mainFrame.Active = true
--- mainFrame.Draggable = true -- Dihapus, diganti custom drag untuk support mobile
+-- mainFrame.Draggable = true -- DIHAPUS: Tidak support mobile
 
 local title = Instance.new("TextLabel", mainFrame)
 title.Size = UDim2.new(1, 0, 0, 30)
@@ -104,12 +108,12 @@ local function getCooldownLabel(slotIndex)
     if not mainGui then return nil end
 
     local label = nil
-    local slotName = "æŠ€èƒ½" .. slotIndex 
+    local slotName = "技能" .. slotIndex 
 
     pcall(function()
-        label = mainGui["ä¸»ç•Œé¢"]["æŠ€èƒ½"]["æŒ‰é”®"][slotName]["æŒ‰é’®"]["å€’è®¡æ—¶"]
+        label = mainGui["主界面"]["技能"]["按键"][slotName]["按钮"]["倒计时"]
         if not label or label.Text == nil then
-            label = mainGui["ä¸»ç•Œé¢"]["æŠ€èƒ½"]["è§¦æ‘¸"][slotName]["æŒ‰é’®"]["å€’è®¡æ—¶"]
+            label = mainGui["主界面"]["技能"]["触摸"][slotName]["按钮"]["倒计时"]
         end
     end)
     return label
@@ -152,13 +156,6 @@ local function startSkillCycle()
                 end
                 
                 print("Teks terdeteksi di Slot " .. slot+1)
-
-                -- Jika kamu ingin menunggu cooldown habis sebelum pindah, 
-                -- buka komentar (uncomment) bagian di bawah ini:
-                -- while cooldownLabel.Text ~= "" do
-                --     task.wait(0.1)
-                -- end
-                
                 print("Lanjut ke slot selanjutnya.")
             else
                 task.wait(settings.DefaultDelay)
