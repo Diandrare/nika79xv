@@ -3,12 +3,18 @@ local RunService = game:GetService("RunService")
 local TeleportService = game:GetService("TeleportService")
 
 local LocalPlayer = Players.LocalPlayer
-local DISTANCE_THRESHOLD = 412
+local DISTANCE_THRESHOLD = 20
 
 local isTeleporting = false
+local canCheck = false
+
+task.delay(7, function()
+    canCheck = true
+    print("Startup delay finished. Auto-Hopper is now active.")
+end)
 
 local function checkDistances()
-    if isTeleporting then return end
+    if isTeleporting or not canCheck then return end
     
     local character = LocalPlayer.Character
     if not character or not character:FindFirstChild("HumanoidRootPart") then return end
